@@ -1,0 +1,36 @@
+[package]
+name = "streamcrypt"
+version = "0.1.0"
+edition = "2021"
+description = "Streaming‑AEAD file encryptor with local passphrase‑wrapped keysets"
+license = "Apache-2.0 OR MIT"
+repository = "https://github.com/your-org/streamcrypt"
+
+[dependencies]
+# CLI parsing with env support
+clap = { version = "4.3", features = ["derive", "env"] }
+
+# Core Tink (insecure I/O for local keyset wrap)
+tink-core = { version = "0.3", features = ["insecure"] }
+
+# Streaming‑AEAD primitive
+tink-streaming-aead = "0.3"
+
+# Regular AEAD (unused directly, but pulled in by tink-core)
+tink-aead = "0.3"
+
+# Zero-sensitive-memory buffers
+zeroize = "1.5"
+
+# PBKDF2 for passphrase → key derivation
+pbkdf2 = "0.10"
+hmac = "0.12"
+sha2 = "0.10"
+
+# AES‑GCM for wrapping the keyset locally
+aes-gcm = "0.10"
+
+# Secure randomness
+rand = "0.8"
+argon2 = "0.5"
+rpassword = "7.3.1"

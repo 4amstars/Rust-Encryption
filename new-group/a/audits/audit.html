@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Audit Report 3: age file encryptor</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 2em; line-height: 1.6; color: #222; }
+    h1 { color: #1a1a1a; }
+    h2 { color: #333; margin-top: 1.5em; }
+    h3 { color: #444; margin-top: 1em; }
+    ul { margin-left: 1.5em; }
+    code { background: #f4f4f4; padding: 2px 4px; border-radius: 4px; }
+    .status-fixed { color: green; }
+    .status-room { color: orange; }
+  </style>
+</head>
+<body>
+  <h1>Audit Report 3: age file encryptor</h1>
+
+  <h2>1. Overview</h2>
+  <p>This report provides an objective, holistic review of the Rust-based CLI application for file encryption and decryption using <code>age</code>. It covers code quality, reliability, security, user experience, and operational considerations.</p>
+
+  <h2>2. Code Quality</h2>
+  <h3>2.1 Structure & Readability</h3>
+  <ul>
+    <li><strong>Modularization:</strong> All functionality resides in <code>main.rs</code>. Consider splitting into modules (e.g., <code>cli.rs</code>, <code>crypto.rs</code>, <code>io.rs</code>) for scalability.</li>
+    <li><strong>Documentation:</strong> Public functions lack doc comments. Adding <code>///</code> style Rustdoc comments improves maintainability.</li>
+    <li><strong>Consistency:</strong> Naming and formatting follow Rust conventions. Code is formatted with <code>rustfmt</code>.</li>
+  </ul>
+
+  <h3>2.2 Dependencies</h3>
+  <ul>
+    <li><strong>Clap & Indicatif:</strong> Well-chosen for CLI parsing and progress bars.</li>
+    <li><strong>Env Logger:</strong> Provides logging, but consider configuring default log level and formatting.</li>
+    <li><strong>Future:</strong> Evaluate reducing dependencies if moving toward a minimal binary.</li>
+  </ul>
+
+  <h2>3. Error Handling & Resilience</h2>
+  <ul>
+    <li><strong>Graceful Failures:</strong> Errors are propagated via <code>anyhow</code>. Consider using custom error types for richer context and handling specific error cases.</li>
+    <li><strong>Exit Codes:</strong> Application always exits with <code>0</code> on error and success. Leverage <code>std::process::exit</code> to return distinct codes for scripting integration.</li>
+    <li><strong>Timeouts:</strong> No mechanism for aborting long operations. For very large files, consider handling interrupts (SIGINT) to clean up partial output.</li>
+  </ul>
+
+  <h2>4. Security Considerations</h2>
+  <ul>
+    <li><strong>Key Handling:</strong> Reads secret keys into memory. Zeroizing sensitive data on drop (using <code>secrecy</code> crate) can reduce exposure in memory dumps.</li>
+    <li><strong>File Permissions:</strong> Output files inherit default permissions. Secure defaults (e.g., <code>0o600</code>) prevent unauthorized access.</li>
+    <li><strong>Recipient Validation:</strong> Public key parsing errors are handled, but could include clearer feedback on expected formats.</li>
+  </ul>
+
+  <h2>5. User Experience & CLI Design</h2>
+  <ul>
+    <li><strong>Help Text:</strong> Flags and arguments are documented by Clap, but examples in <code>--help</code> would aid users.</li>
+    <li><strong>Progress Bar:</strong> Clear and informative. Consider a <code>--quiet</code> mode to disable it for scripting.</li>
+    <li><strong>Verbosity Levels:</strong> Only a single <code>--verbose</code> flag. Implement multiple levels (<code>-v, -vv</code>) and log targets.</li>
+  </ul>
+
+  <h2>6. Testing & CI</h2>
+  <ul>
+    <li><strong>Unit Tests:</strong> No tests present. Add tests for parsing, error cases, and small encryption/decryption cycles.</li>
+    <li><strong>Integration Tests:</strong> Automate end-to-end tests with temporary files to verify encryption/decryption.</li>
+    <li><strong>Continuous Integration:</strong> Integrate with GitHub Actions or similar to run tests and lint checks on each commit.</li>
+  </ul>
+
+  <h2>7. Documentation & Distribution</h2>
+  <ul>
+    <li><strong>README:</strong> Provide usage examples, installation instructions, and links to age documentation.</li>
+    <li><strong>Versioning:</strong> Use semantic versioning and tag releases.</li>
+    <li><strong>Packaging:</strong> Publish to crates.io or provide prebuilt binaries for common platforms.</li>
+  </ul>
+
+  <h2>8. Operational Considerations</h2>
+  <ul>
+    <li><strong>Performance:</strong> Reads entire file sequentially; fine for most use cases. For very large files, consider concurrent buffering or streaming optimizations.</li>
+    <li><strong>Resource Usage:</strong> Memory overhead is minimal. Monitor CPU usage for encryption on big files.</li>
+    <li><strong>Logging:</strong> Directs to stderr by default. Consider file-based logging for audit trails.</li>
+  </ul>
+
+  <h2>9. Summary of Findings</h2>
+  <ul>
+    <li>Strong foundation with robust CLI parsing and encryption logic.</li>
+    <li>All previous high-priority issues (panic, overwrites, multi-recipient support) resolved.</li>
+    <li>Opportunities remain in documentation, testing, modularization, and security hardening.</li>
+  </ul>
+</body>
+</html>

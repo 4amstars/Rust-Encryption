@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>SecurePass - Password-Based File Encryption</title>
+    <style>
+        body {
+            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            margin: 40px;
+            max-width: 900px;
+            color: #333;
+        }
+        code {
+            background-color: #f4f4f4;
+            padding: 2px 4px;
+            border-radius: 4px;
+            font-family: monospace;
+        }
+        pre {
+            background: #f8f8f8;
+            padding: 10px;
+            border-left: 5px solid #ccc;
+            overflow-x: auto;
+        }
+        h1, h2, h3 {
+            color: #007acc;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>🔐 SecurePass</h1>
+    <p><strong>SecurePass</strong> is a fast and secure password-based file encryption CLI tool using <code>AES-256-GCM-SIV</code> and <code>Argon2id</code> for password key derivation.</p>
+
+    <h2>⚙️ Features</h2>
+    <ul>
+        <li>🔑 Password-based encryption — no key files required</li>
+        <li>🧠 Uses Argon2id for secure key derivation with a random salt</li>
+        <li>🔐 AES-256-GCM-SIV encryption for strong, nonce-resilient encryption</li>
+        <li>🧼 Zeroes passwords and keys from memory after use</li>
+        <li>🖥️ Simple, user-friendly CLI</li>
+    </ul>
+
+    <h2>📦 Dependencies</h2>
+    <pre><code>
+aes-gcm-siv = "0.11"
+argon2 = "0.5"
+rand = "0.8"
+rpassword = "7.2"
+clap = { version = "4.4", features = ["derive"] }
+anyhow = "1.0"
+zeroize = "1.6"
+    </code></pre>
+
+    <h2>🚀 Usage</h2>
+
+    <h3>🔧 Build the binary</h3>
+    <pre><code>cargo build --release</code></pre>
+
+    <h3>🔐 Encrypt a file</h3>
+    <pre><code>./securepass encrypt path/to/file.txt</code></pre>
+    <p>You’ll be prompted to enter and confirm a password. The file will be encrypted <strong>in-place</strong>.</p>
+
+    <h3>🔓 Decrypt a file</h3>
+    <pre><code>./securepass decrypt path/to/file.txt</code></pre>
+    <p>Enter the password used for encryption to restore the original file.</p>
+
+    <h2>🔒 Security Details</h2>
+    <ul>
+        <li><strong>Argon2id</strong>: Used with a unique 128-bit salt per encryption</li>
+        <li><strong>Salt + Nonce</strong> stored with ciphertext: <code>[salt || nonce || ciphertext]</code></li>
+        <li><strong>Passwords</strong> and derived <code>[u8; 32]</code> keys are securely zeroed after use</li>
+        <li><strong>In-place overwrite</strong>: original file is replaced with the encrypted or decrypted version</li>
+    </ul>
+
+    <h2>📁 File Format</h2>
+    <p>Encrypted files are stored in the following binary format:</p>
+    <pre><code>[16-byte Salt] [12-byte Nonce] [Ciphertext]</code></pre>
+
+    <h2>⚠️ Notes & Recommendations</h2>
+    <ul>
+        <li>Back up your files before encrypting — overwriting is in-place!</li>
+        <li>If you forget your password, there is no recovery. Use a password manager.</li>
+        <li>Salt and nonce are random per encryption — re-encrypting the same file with the same password yields a different ciphertext.</li>
+    </ul>
+
+    <h2>📜 License</h2>
+    <p>This project is open-source and available under the MIT License.</p>
+
+</body>
+</html>

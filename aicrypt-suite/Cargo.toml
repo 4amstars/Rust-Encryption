@@ -1,0 +1,6 @@
+[workspace]
+members = [
+    "aipas",
+    "aikey"
+]
+resolver = "2"

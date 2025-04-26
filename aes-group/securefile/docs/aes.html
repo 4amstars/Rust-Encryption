@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>SecureFile - AES-256-GCM-SIV CLI</title>
+  <style>
+    body {
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      line-height: 1.6;
+      margin: 2rem auto;
+      max-width: 800px;
+      padding: 0 1rem;
+      background-color: #ffffff;
+      color: #222;
+    }
+
+    h1, h2, h3 {
+      color: #111;
+    }
+
+    pre {
+      background-color: #f4f4f4;
+      color: #000;
+      padding: 1em;
+      overflow-x: auto;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+    }
+
+    code {
+      background-color: #f4f4f4;
+      padding: 0.2em 0.4em;
+      border-radius: 3px;
+      font-family: Consolas, "Courier New", monospace;
+    }
+
+    a {
+      color: #007acc;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    hr {
+      margin: 2rem 0;
+      border: none;
+      border-top: 1px solid #ddd;
+    }
+  </style>
+</head>
+<body>
+
+<h1>🔐 SecureFile</h1>
+<p><strong>A production-ready file encryption CLI using AES-256-GCM-SIV in Rust.</strong></p>
+
+<p>This tool provides in-place encryption and decryption of files using AES-256-GCM-SIV, offering robust security with nonce-misuse resistance, authentication, and memory hygiene.</p>
+
+<hr/>
+
+<h2>⚙ Features</h2>
+<ul>
+  <li>✅ AES-256-GCM-SIV (RFC 8452) with random nonce</li>
+  <li>✅ In-place file encryption (overwrites original)</li>
+  <li>✅ Key wiping from memory after use</li>
+  <li>✅ Strict 32-byte key file requirement</li>
+  <li>✅ Built with security-focused crates: <code>aes-gcm-siv</code>, <code>zeroize</code>, <code>anyhow</code></li>
+</ul>
+
+<hr/>
+
+<h2>🚀 Usage</h2>
+
+<h3>1. Install Rust</h3>
+<pre><code>https://rustup.rs</code></pre>
+
+<h3>2. Clone and Build</h3>
+<pre><code>git clone https://github.com/yourusername/securefile
+cd securefile
+cargo build --release
+</code></pre>
+
+<h3>3. Generate a Key File</h3>
+<pre><code># Linux/macOS
+head -c 32 /dev/urandom > key.key
+
+# Windows (PowerShell)
+[IO.File]::WriteAllBytes("key.key", (1..32 | ForEach-Object { Get-Random -Minimum 0 -Maximum 256 }))
+</code></pre>
+
+<h3>4. Encrypt a File</h3>
+<pre><code>./target/release/securefile encrypt secret.txt</code></pre>
+
+<h3>5. Decrypt a File</h3>
+<pre><code>./target/release/securefile decrypt secret.txt</code></pre>
+
+<hr/>
+
+<h2>🔒 Security Notes</h2>
+<ul>
+  <li>AES-GCM-SIV is resistant to nonce reuse, but random nonces are still used per file for best practice.</li>
+  <li>The key file must be securely stored and backed up — there is no recovery if lost.</li>
+  <li>This tool does not (yet) support password-based key derivation — see roadmap below.</li>
+</ul>
+
+<hr/>
+
+<h2>📦 Dependencies</h2>
+<pre><code>[dependencies]
+aes-gcm-siv = "0.11"
+rand = "0.8"
+clap = { version = "4.4", features = ["derive"] }
+anyhow = "1.0"
+zeroize = "1.6"</code></pre>
+
+<hr/>
+
+<h2>📈 Roadmap Ideas</h2>
+<ul>
+  <li>🔐 Argon2 password-based encryption</li>
+  <li>📁 Recursive directory encryption</li>
+  <li>🧪 Unit tests for crypto operations</li>
+  <li>📦 Streaming large file encryption</li>
+</ul>
+
+<hr/>
+
+<p><small>MIT License &mdash; Built with 🦀 in Rust for secure file encryption</small></p>
+
+</body>
+</html>

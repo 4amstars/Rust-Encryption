@@ -1,0 +1,12 @@
+[package]
+name = "aipas"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+anyhow = "1.0"
+chacha20poly1305 = "0.10"
+argon2 = "0.5.3"
+rpassword = "7.4.0"
+rand = "0.9"
+zeroize = "1.8"

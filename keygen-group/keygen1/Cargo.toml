@@ -1,0 +1,14 @@
+[package]
+name = "keygen1"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+argon2 = "0.5"
+scrypt = "0.10"
+pbkdf2 = "0.12"
+rand = "0.8"
+rand_chacha = "0.3"
+rand_core = "0.6"
+sha2 = "0.10"
+clap = { version = "4.5", features = ["derive"] }

@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>KeyGen README</title>
+  <style>
+    body {
+      max-width: 800px;
+      margin: 0 auto;
+      font-family: Arial, sans-serif;
+      line-height: 1.5;
+    }
+    code, pre {
+      background-color: #f8f8f8;
+      border-radius: 4px;
+      padding: 2px 6px;
+      font-family: Consolas, monospace;
+    }
+    h1, h2, h3 {
+      border-bottom: 1px solid #ccc;
+      padding-bottom: 5px;
+    }
+    h1 {
+      margin-top: 40px;
+    }
+    .note {
+      background: #ffffcc;
+      border-left: 4px solid #ffeb3b;
+      padding: 10px;
+      margin: 20px 0;
+    }
+    .important {
+      background: #ffd7d7;
+      border-left: 4px solid #f44336;
+      padding: 10px;
+      margin: 20px 0;
+    }
+    .config-table {
+      border-collapse: collapse;
+      width: 100%;
+      margin: 10px 0;
+    }
+    .config-table th, .config-table td {
+      border: 1px solid #ccc;
+      padding: 5px 10px;
+      text-align: left;
+    }
+    .config-table th {
+      background-color: #f2f2f2;
+    }
+  </style>
+</head>
+<body>
+
+<h1>KeyGen README</h1>
+
+<p>
+  <strong>KeyGen</strong> is a Rust-based deterministic key-generation tool. It creates a large binary
+  key file (<code>key.key</code>) from a user-supplied password, using <em>Argon2</em> as a Key Derivation
+  Function (KDF) and <em>ChaCha20</em> (or another method) as a cryptographically secure pseudorandom
+  number generator (PRNG).
+</p>
+
+<hr>
+
+<h2>1. Usage</h2>
+<p>
+  After compiling, you can run KeyGen from the command line:
+</p>
+<pre><code>./keygen &lt;size_in_bytes&gt; &lt;password&gt;
+</code></pre>
+<p>
+  For example:
+</p>
+<pre><code>./keygen 1048576 mysecretpassword
+</code></pre>
+<p>
+  This will:
+</p>
+<ul>
+  <li>Derive a 32-byte seed from <strong>mysecretpassword</strong> using Argon2.</li>
+  <li>Use that seed to generate 1,048,576 bytes (1 MB) of cryptographically secure, deterministic data.</li>
+  <li>Write the data to a file named <code>key.key</code> in the current directory.</li>
+</ul>
+
+<div class="important">
+  <strong>Important:</strong> If you change any compile-time constants (including the Argon2 parameters or
+  the salt) and recompile, the same password will yield a completely different key file. This is intended
+  behavior for security reasons.
+</div>
+
+<hr>
+
+<h2>2. Configurable Variables</h2>
+<p>
+  All primary configuration options are stored in a <code>Config</code> struct within <code>main.rs</code>. These
+  variables dictate memory usage, key size limits, Argon2 parameters, output filename, etc.
+</p>
+<table class="config-table">
+  <thead>
+    <tr>
+      <th>Field</th>
+      <th>Default</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>max_size_bytes</code></td>
+      <td><code>5 * 1024 * 1024 * 1024</code> (5 GB)</td>
+      <td>The maximum allowed size of the key file in bytes.</td>
+    </tr>
+    <tr>
+      <td><code>chunk_size_bytes</code></td>
+      <td><code>64 * 1024</code> (64 KB)</td>
+      <td>Size of the write buffer used when generating the key file (to avoid large memory usage).</td>
+    </tr>
+    <tr>
+      <td><code>max_password_length</code></td>
+      <td><code>1024</code></td>
+      <td>Max number of bytes allowed for the password input.</td>
+    </tr>
+    <tr>
+      <td><code>argon2_memory_kib</code></td>
+      <td><code>65536</code> (64 MB in KiB)</td>
+      <td>Memory cost for Argon2. Higher values are more secure but use more RAM.</td>
+    </tr>
+    <tr>
+      <td><code>argon2_iterations</code></td>
+      <td><code>3</code></td>
+      <td>Number of iteration passes over Argon2's internal memory. Higher means more CPU time cost.</td>
+    </tr>
+    <tr>
+      <td><code>argon2_parallelism</code></td>
+      <td><code>1</code></td>
+      <td>Number of lanes (threads). Setting this higher can speed up or slow down Argon2 depending on your machine.</td>
+    </tr>
+    <tr>
+      <td><code>min_argon2_memory_kib</code></td>
+      <td><code>8192</code></td>
+      <td>Minimum allowed Argon2 memory cost (8 MB in KiB).</td>
+    </tr>
+    <tr>
+      <td><code>max_argon2_memory_kib</code></td>
+      <td><code>1048576</code></td>
+      <td>Maximum allowed Argon2 memory cost (1 GB in KiB).</td>
+    </tr>
+    <tr>
+      <td><code>min_argon2_iterations</code></td>
+      <td><code>1</code></td>
+      <td>Minimum iteration count.</td>
+    </tr>
+    <tr>
+      <td><code>max_argon2_iterations</code></td>
+      <td><code>10</code></td>
+      <td>Maximum iteration count.</td>
+    </tr>
+    <tr>
+      <td><code>min_argon2_parallelism</code></td>
+      <td><code>1</code></td>
+      <td>Minimum parallelism (lanes).</td>
+    </tr>
+    <tr>
+      <td><code>max_argon2_parallelism</code></td>
+      <td><code>8</code></td>
+      <td>Maximum parallelism (lanes).</td>
+    </tr>
+    <tr>
+      <td><code>kdf_salt</code></td>
+      <td><code>"BetterDeterministicKeySalt_v2"</code></td>
+      <td>A fixed salt for Argon2. Changing this changes all derived keys.</td>
+    </tr>
+    <tr>
+      <td><code>derived_seed_size</code></td>
+      <td><code>32</code></td>
+      <td>Size in bytes of the derived seed for the PRNG. Typically 32 bytes (256 bits).</td>
+    </tr>
+    <tr>
+      <td><code>output_filename</code></td>
+      <td><code>"key.key"</code></td>
+      <td>Name of the file to which the key is written.</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3>How to Modify Config</h3>
+<p>
+  To change any of these defaults, locate the <code>Config</code> struct in <code>main.rs</code> and edit the fields
+  in the <code>Config::default()</code> implementation (or create your own custom configuration).
+</p>
+<pre><code>let config = Config {
+    argon2_iterations: 5,
+    // ...
+    ..Config::default()
+};
+</code></pre>
+
+<hr>
+
+<h2>3. Process of Generating a Key</h2>
+<ol>
+  <li>
+    <strong>Input:</strong> The user provides a desired key size (<code>size_in_bytes</code>) and a password.
+  </li>
+  <li>
+    <strong>Argon2 Derivation:</strong> The application uses <code>Argon2id</code> with the chosen parameters
+    (memory cost, iterations, parallelism) to derive a 32-byte (or user-configured) seed from the password
+    plus a fixed salt (<code>kdf_salt</code>).
+  </li>
+  <li>
+    <strong>Seeding the PRNG:</strong> The derived 32-byte seed is used to initialize the
+    <code>ChaCha20Rng</code> (or any chosen PRNG). This ensures that the same password, salt, and Argon2
+    parameters will always yield the same internal PRNG state.
+  </li>
+  <li>
+    <strong>Generating the Bytes:</strong> The PRNG produces <code>size_in_bytes</code> of pseudorandom data,
+    written out in chunks of <code>chunk_size_bytes</code> (default 64 KB) to a file named <code>key.key</code>.
+  </li>
+</ol>
+
+<hr>
+
+<h2>4. Math: How Many Different Keys Are Possible?</h2>
+<p>
+  At a high level, the total number of possible keys depends on both:
+</p>
+<ul>
+  <li>The number of possible <em>seed values</em> derived by Argon2 (typically 2<sup>256</sup> possibilities for a 32-byte seed).</li>
+  <li>The <em>transformations</em> performed by the PRNG to yield the key file.</li>
+</ul>
+
+<h3>Number of Seed Values</h3>
+<p>
+  Since the derived seed is 256 bits by default, there are 2<sup>256</sup> possible seeds. This is an
+  astronomically large number (~10<sup>77</sup>).
+</p>
+
+<h3>Number of Possible Keys</h3>
+<p>
+  Once a 256-bit seed is chosen, the PRNG (ChaCha20) can produce an extremely large stream of pseudorandom
+  bytes. For a key of <em>N</em> bytes, each byte can theoretically be any of 256 possible values, so
+  we say there are 2<sup>8N</sup> possible <em>N</em>-byte sequences. ChaCha20 doesn't generate them
+  uniformly at random from <em>all</em> 2<sup>8N</sup> possibilities every time, but it <strong>very
+  closely simulates</strong> it. The net effect is that the space of possible outputs is so large it
+  cannot be exhaustively enumerated.
+</p>
+<p>
+  Since we effectively have 2<sup>256</sup> possible initial seeds, the practical keyspace for the
+  generated file is on the order of 2<sup>256</sup> (still more than enough for any security need).
+  In short, it is computationally infeasible for anyone to guess a seed or replicate your key without
+  the same password, Argon2 settings, and salt.
+</p>
+
+<hr>
+
+<h2>5. Compilation and Execution</h2>
+<p>
+  To compile KeyGen, ensure you have <code>cargo</code> (Rust’s package manager and build tool) installed.
+  Then run:
+</p>
+<pre><code>cargo build --release
+</code></pre>
+<p>
+  This will produce an optimized binary at <code>target/release/keygen</code>. You can then use:
+</p>
+<pre><code>./target/release/keygen &lt;size_in_bytes&gt; &lt;password&gt;
+</code></pre>
+<p>
+  or copy it to a preferred location and run:
+</p>
+<pre><code>./keygen &lt;size_in_bytes&gt; &lt;password&gt;
+</code></pre>
+
+<hr>
+
+<h2>6. Security Notes</h2>
+<ul>
+  <li>
+    <strong>Use Strong Passwords</strong>: The security of deterministic key generation hinges on the password's
+    entropy. A short or weak password undermines Argon2’s advantage.
+  </li>
+  <li>
+    <strong>Argon2 Parameters</strong>: Higher memory cost (<code>argon2_memory_kib</code>) and iteration count
+    (<code>argon2_iterations</code>) make brute-forcing passwords significantly harder, but also require more time
+    and resources on your machine. Choose carefully based on your hardware and security needs.
+  </li>
+  <li>
+    <strong>Fixed Salt Means Determinism</strong>: Changing the <code>kdf_salt</code> will produce completely different
+    keys from the same password. If you keep the salt as-is, the same password always yields the same key.
+  </li>
+  <li>
+    <strong>Large Key Sizes</strong>: Generating multi-gigabyte keys is possible but be sure you have enough disk space
+    and do not inadvertently share these huge files if that might cause security or storage issues.
+  </li>
+</ul>
+
+<hr>
+
+<h2>7. FAQ</h2>
+
+<dl>
+  <dt><strong>Does changing any Argon2 parameter or the salt produce a completely different key?</strong></dt>
+  <dd>
+    Yes. The derived seed depends on <em>all</em> those inputs (password, salt, Argon2 memory, Argon2 iterations,
+    etc.). A single change anywhere in the chain will yield a different seed.
+  </dd>
+
+  <dt><strong>Could I skip Argon2 and just use the password as a seed to ChaCha20?</strong></dt>
+  <dd>
+    Technically you can, but you lose the password‑hardening benefits of Argon2. Argon2 defends against
+    brute‑force attacks by requiring significant memory and CPU time, deterring attackers.
+  </dd>
+
+  <dt><strong>Is there a chance two 64 KB chunks in the generated key might match?</strong></dt>
+  <dd>
+    In theory, yes—random data <em>can</em> coincide—but with ChaCha20, the probability is vanishingly small
+    (effectively zero for real‑world use).
+  </dd>
+</dl>
+
+<hr>
+
+<h3>License</h3>
+<p>
+  This project is distributed under the terms of your chosen license. Replace this text
+  with your actual licensing details (e.g., MIT, Apache-2.0, GPL, etc.).
+</p>
+
+<p><em>&copy; 2025 actually its not copyrighted lol </em></p>
+
+</body>
+</html>
+

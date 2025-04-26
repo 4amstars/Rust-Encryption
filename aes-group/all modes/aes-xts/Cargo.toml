@@ -1,0 +1,10 @@
+[package]
+name = "aes-xts"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+aes = "0.8"
+xts-mode = "0.5"
+anyhow = "1.0"
+rand = "0.8"

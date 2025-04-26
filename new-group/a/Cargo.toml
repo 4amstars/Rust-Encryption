@@ -1,0 +1,12 @@
+[package]
+name = "a"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+age = "0.11.1"
+anyhow = "1.0"
+clap = { version = "4.5", features = ["derive"] }
+indicatif = "0.17"
+log = "0.4"
+env_logger = "0.10"

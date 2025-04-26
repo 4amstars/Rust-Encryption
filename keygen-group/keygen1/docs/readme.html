@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Ultimate Key Maker - README</title>
+  <style>
+    body { font-family: monospace; background-color: #f9f9f9; padding: 2em; color: #333; }
+    h1, h2, h3 { color: #444; }
+    code { background-color: #eee; padding: 2px 6px; border-radius: 3px; }
+    pre { background: #eee; padding: 1em; border-left: 5px solid #bbb; overflow-x: auto; }
+    table { border-collapse: collapse; width: 100%; margin-top: 1em; }
+    th, td { border: 1px solid #ccc; padding: 0.5em; text-align: left; }
+    th { background-color: #ddd; }
+  </style>
+</head>
+<body>
+  <h1>🔐 Ultimate Key Maker - CLI Tool</h1>
+  <p>One tool to generate deterministic or random cryptographic keys with flexible options and strong defaults.</p>
+
+  <h2>📦 Usage</h2>
+  <pre><strong>cargo run -- &lt;SIZE&gt; [OPTIONS]</strong></pre>
+
+  <h3>Positional Argument</h3>
+  <ul>
+    <li><code>&lt;SIZE&gt;</code>: Required for all generation modes (e.g. <code>1mb</code>, <code>512kb</code>, <code>2gb</code>)</li>
+  </ul>
+
+  <h3>Options</h3>
+  <table>
+    <thead>
+      <tr><th>Flag</th><th>Description</th><th>Required?</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><code>--mode &lt;MODE&gt;</code></td><td>Select key generation or analysis mode (default: <code>argon2</code>)</td><td>No</td></tr>
+      <tr><td><code>-p</code>, <code>--password</code></td><td>Primary password used in deterministic modes</td><td>Yes (most modes)</td></tr>
+      <tr><td><code>--password2</code></td><td>Secondary password for <code>dualpass</code> mode</td><td>Yes for <code>dualpass</code></td></tr>
+      <tr><td><code>--count &lt;N&gt;</code></td><td>Generate N keys</td><td>No (default is 1)</td></tr>
+      <tr><td><code>--checksum</code></td><td>Print SHA-256 hash of each generated key</td><td>No</td></tr>
+      <tr><td><code>--output &lt;file&gt;</code></td><td>Save output as specific file (only if <code>--count=1</code>)</td><td>No</td></tr>
+      <tr><td><code>--input &lt;file&gt;</code></td><td>Input file for <code>--mode entropy-test</code></td><td>Yes (only in entropy-test)</td></tr>
+    </tbody>
+  </table>
+
+  <h2>🔧 Supported Modes</h2>
+  <table>
+    <thead>
+      <tr><th>Mode</th><th>Description</th><th>Password(s)</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><code>argon2</code></td><td>Deterministic key using Argon2id</td><td>1 password</td></tr>
+      <tr><td><code>scrypt</code></td><td>Deterministic key using Scrypt</td><td>1 password</td></tr>
+      <tr><td><code>pbkdf2</code></td><td>Deterministic key using PBKDF2-HMAC-SHA512</td><td>1 password</td></tr>
+      <tr><td><code>dualpass</code></td><td>Two KDFs (Argon2 + PBKDF2) XORed using 2 passwords</td><td>2 passwords</td></tr>
+      <tr><td><code>xorprng</code></td><td>XOR of two PRNGs seeded from same password</td><td>1 password</td></tr>
+      <tr><td><code>multikey</code></td><td>Generate N deterministic keys using Argon2 + indexed salt</td><td>1 password</td></tr>
+      <tr><td><code>random</code></td><td>Truly random keys, stored in <code>./r/</code>, never overwritten</td><td>None</td></tr>
+      <tr><td><code>entropy-test</code></td><td>Analyze a binary file for entropy and randomness</td><td>None</td></tr>
+    </tbody>
+  </table>
+
+  <h2>📂 Output Behavior</h2>
+  <ul>
+    <li><strong>Default naming:</strong> <code>1.key</code>, <code>2.key</code>, etc.</li>
+    <li><strong>Random mode:</strong> saved in <code>./r/</code>; files are not overwritten</li>
+    <li><strong>--output:</strong> renames only when <code>--count=1</code></li>
+  </ul>
+
+  <h2>🧪 Entropy Analysis</h2>
+  <p>Use <code>--mode entropy-test --input &lt;file&gt;</code> to generate <code>report.html</code> with:</p>
+  <ul>
+    <li>Byte histogram (0x00 to 0xFF)</li>
+    <li>Most and least frequent bytes</li>
+    <li>Shannon entropy score</li>
+    <li>Repetition detection</li>
+  </ul>
+
+  <pre>
+cargo run -- --mode entropy-test --input 1.key
+  </pre>
+
+  <h2>🧪 Examples</h2>
+
+  <pre># Generate 1MB Argon2 key
+cargo run -- 1mb -p mypass
+
+# Generate 512KB PBKDF2 key with checksum
+cargo run -- 512kb --mode pbkdf2 -p hunter2 --checksum
+
+# Dual password XOR key
+cargo run -- 2mb --mode dualpass -p alpha --password2 beta
+
+# Generate 3 random keys
+cargo run -- 1mb --mode random --count 3
+
+# Save one key as "secure.key"
+cargo run -- 1mb -p test --output secure.key
+
+# Analyze a previously generated key
+cargo run -- --mode entropy-test --input secure.key
+  </pre>
+
+  <h2>⚠️ Common Mistakes</h2>
+  <ul>
+    <li><strong>Missing size:</strong> All generation modes require the <code>SIZE</code> positional argument</li>
+    <li><strong>Using --output with --count > 1:</strong> Has no effect; default names will be used</li>
+    <li><strong>Entropy mode requires --input:</strong> Make sure to specify a file to analyze</li>
+  </ul>
+
+  <pre>
+# ❌ This will fail
+cargo run -- --mode argon2
+
+# ✅ Fix
+cargo run -- 1mb -p mypass --mode argon2
+  </pre>
+
+  <h2>✅ Summary</h2>
+  <ul>
+    <li>Deterministic and random modes for cryptographic key generation</li>
+    <li>Fully reproducible key output (same password = same key)</li>
+    <li>Fast entropy analysis with HTML reports</li>
+    <li>Custom file output, password combinations, and repeat-safe behavior</li>
+  </ul>
+
+  <footer>
+    <p><small>Ultimate Key Maker — 2025. Built with 🔐 by passionate Rustaceans.</small></p>
+  </footer>
+</body>
+</html>

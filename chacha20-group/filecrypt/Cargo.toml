@@ -1,0 +1,12 @@
+[package]
+name = "filecrypt"
+version = "0.1.0"
+edition = "2021"
+
+
+[dependencies]
+chacha20poly1305 = "0.10.1"  # No features needed
+clap = { version = "4.5.37", features = ["derive"] }
+rand = "0.9.1"
+tempfile = "3.19.1"
+zeroize = "1.8.1"
