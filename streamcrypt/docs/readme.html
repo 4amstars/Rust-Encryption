@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>streamcrypt v3 – Ultra Secure Streaming File Encryption</title>
+  <style>
+    body {
+      font-family: "Segoe UI", sans-serif;
+      line-height: 1.6;
+      max-width: 840px;
+      margin: 0 auto;
+      padding: 2rem;
+      background-color: #fefefe;
+      color: #333;
+    }
+    code, pre {
+      background: #f4f4f4;
+      padding: 0.2em 0.5em;
+      border-radius: 4px;
+      font-size: 0.95em;
+    }
+    pre {
+      padding: 1em;
+      overflow-x: auto;
+    }
+    h1, h2, h3 {
+      color: #2b2b2b;
+    }
+    a {
+      color: #007acc;
+    }
+    hr {
+      margin: 2rem 0;
+    }
+    ul {
+      padding-left: 1.2em;
+    }
+  </style>
+</head>
+<body>
+
+<h1>🔐 streamcrypt v3</h1>
+
+<p>
+  <strong>streamcrypt</strong> is a secure, modern, command-line utility written in Rust that performs streaming file encryption using password-protected keysets.
+  It is designed to be:
+</p>
+
+<ul>
+  <li>💎 <strong>Simple</strong>: Only one clear encryption mode</li>
+  <li>🛡️ <strong>Secure</strong>: No embedded keys, no weak defaults</li>
+  <li>🚀 <strong>Production-ready</strong>: Uses <a href="https://github.com/google/tink">Google Tink</a> for best-practice cryptography</li>
+</ul>
+
+<hr />
+
+<h2>✨ Features</h2>
+<ul>
+  <li>🔐 Streaming encryption with AES-256-GCM-HKDF</li>
+  <li>🧱 Uses a keyset file encrypted with your passphrase</li>
+  <li>❌ No embedded key material in output files</li>
+  <li>📁 Suitable for backups, secure file transfers, long-term archives</li>
+  <li>🔁 Keyset can be reused to encrypt/decrypt multiple files</li>
+</ul>
+
+<hr />
+
+<h2>⚙️ Encryption Model</h2>
+
+<p>
+  <code>streamcrypt</code> uses two required components to encrypt and decrypt files:
+</p>
+
+<ol>
+  <li><strong>An encrypted keyset file</strong> (e.g. <code>a.k</code>) generated with <code>keygen</code></li>
+  <li><strong>A passphrase</strong> used to encrypt/decrypt that keyset file</li>
+</ol>
+
+<p>
+  The keyset contains a randomly generated AES-GCM-HKDF key. Your password is <em>not</em> the encryption key itself — it is used to <strong>wrap and protect the keyset</strong>.
+</p>
+
+<p><strong>Encryption files do not contain key material</strong>. This provides strong separation of ciphertext and key.</p>
+
+<hr />
+
+<h2>📦 Installation</h2>
+
+<p>Build from source using Cargo:</p>
+
+<pre><code>cargo build --release</code></pre>
+
+<p>Or run directly:</p>
+
+<pre><code>cargo run -- [OPTIONS] &lt;COMMAND&gt;</code></pre>
+
+<hr />
+
+<h2>🧭 Command Usage</h2>
+
+<pre><code>Usage:
+  streamcrypt.exe --keyset &lt;PATH&gt; --passphrase &lt;PASSWORD&gt; &lt;COMMAND&gt;
+
+Commands:
+  keygen                      Generate a new encrypted keyset
+  encrypt &lt;INPUT&gt; &lt;OUTPUT&gt;    Encrypt a file
+  decrypt &lt;INPUT&gt; &lt;OUTPUT&gt;    Decrypt a file
+</code></pre>
+
+<p><strong>Note:</strong> You must always pass <code>--keyset</code> and <code>--passphrase</code> <em>before</em> the command.</p>
+
+<hr />
+
+<h2>🛠️ Examples</h2>
+
+<h3>🔑 Generate Keyset</h3>
+<pre><code>streamcrypt.exe --keyset a.k --passphrase "hunter2" keygen</code></pre>
+
+<h3>🔐 Encrypt a File</h3>
+<pre><code>streamcrypt.exe --keyset a.k --passphrase "hunter2" encrypt message.txt message.scr</code></

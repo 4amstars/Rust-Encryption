@@ -1,0 +1,22 @@
+[package]
+name = "streamcrypt"
+version = "0.1.0"
+edition = "2021"
+authors = ["You 🥷"]
+description = "Streaming‑AEAD file encryption with password or keyset support"
+license = "MIT"
+
+[dependencies]
+clap = { version = "4.3", features = ["derive", "env"] }
+tink-core = { version = "0.3", features = ["insecure"] }
+tink-streaming-aead = "0.3"
+tink-aead = "0.3"
+zeroize = "1.5"
+pbkdf2 = "0.10"
+hmac = "0.12"
+sha2 = "0.10"
+aes-gcm = "0.10"
+rand = "0.8"
+argon2 = "0.5"
+rpassword = "7.2"
+byteorder = "1.4"

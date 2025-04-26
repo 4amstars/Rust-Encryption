@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Threefish-512 CLI - Secure File Encryption</title>
+  <style>
+    body {
+      font-family: system-ui, sans-serif;
+      background-color: #f4f4f4;
+      padding: 2em;
+      max-width: 800px;
+      margin: auto;
+      color: #333;
+    }
+    h1, h2 {
+      color: #444;
+    }
+    code {
+      background-color: #eee;
+      padding: 2px 4px;
+      border-radius: 4px;
+      font-family: monospace;
+    }
+    pre {
+      background-color: #eee;
+      padding: 1em;
+      border-radius: 6px;
+      overflow-x: auto;
+    }
+    .note {
+      background-color: #fff8dc;
+      border-left: 4px solid #f0ad4e;
+      padding: 1em;
+      margin: 1em 0;
+    }
+    footer {
+      margin-top: 3em;
+      font-size: 0.9em;
+      color: #666;
+    }
+  </style>
+</head>
+<body>
+
+<h1>🔐 Threefish-512 CLI</h1>
+<p>A fast, secure, and minimal command-line encryption tool using <strong>Threefish-512</strong> and <strong>HMAC-SHA256</strong>.</p>
+
+<hr>
+
+<h2>🚀 Features</h2>
+<ul>
+  <li>File encryption using <strong>Threefish-512</strong> block cipher</li>
+  <li>Stream cipher mode using unique tweak per block</li>
+  <li>HMAC-SHA256 for integrity and tamper protection</li>
+  <li>Secure key memory zeroing via <code>zeroize</code></li>
+  <li>In-place encryption/decryption using atomic temp file</li>
+</ul>
+
+<h2>🔧 Key File Format</h2>
+<p>The application expects a <code>key.key</code> file in the same folder.</p>
+
+<pre><code>Total: 96 bytes
+- First 64 bytes: Encryption key (Threefish-512)
+- Last 32 bytes:  HMAC key (SHA256)</code></pre>
+
+<div class="note">
+  <strong>Tip:</strong> You can generate a secure key file using a keygen tool or command-line:
+  <br>
+  <code>dd if=/dev/urandom of=key.key bs=96 count=1</code> (Linux/Mac)
+</div>
+
+<h2>🧪 Usage</h2>
+
+<h3>Encrypt a file</h3>
+<pre><code>threefish_cli encrypt file.txt</code></pre>
+
+<h3>Decrypt a file</h3>
+<pre><code>threefish_cli decrypt file.txt</code></pre>
+
+<p>Files are modified in-place. A temporary <code>.tmp</code> file is used for safe updates.</p>
+
+<h2>🛡️ Security Design</h2>
+<ul>
+  <li>Each file is encrypted using a random <strong>nonce</strong></li>
+  <li>Every block uses a unique <strong>tweak</strong> = (nonce, block number)</li>
+  <li><strong>Authentication</strong> ensures no silent corruption or tampering</li>
+  <li>If the HMAC doesn't match, decryption fails</li>
+</ul>
+
+<h2>❗ Troubleshooting</h2>
+<ul>
+  <li><strong>Authentication failed</strong>: File was modified or wrong key was used</li>
+  <li><strong>No key.key found</strong>: Make sure it's in the same directory</li>
+  <li><strong>Invalid key length</strong>: Must be exactly 96 bytes</li>
+</ul>
+
+<h2>📁 Example Folder Layout</h2>
+<pre><code>threefish_cli.exe
+key.key
+README.html
+secret.txt</code></pre>
+
+<footer>
+  <p>Made with ❤️ in Rust. Powered by Threefish-512 and authenticated encryption best practices.</p>
+</footer>
+
+</body>
+</html>

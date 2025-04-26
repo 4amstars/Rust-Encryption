@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Threefish CLI - File Encryption Tool</title>
+  <style>
+    body {
+      font-family: system-ui, sans-serif;
+      background-color: #f4f4f4;
+      padding: 2em;
+      max-width: 800px;
+      margin: auto;
+      color: #333;
+    }
+    h1, h2 {
+      color: #444;
+    }
+    code {
+      background-color: #eee;
+      padding: 2px 4px;
+      border-radius: 4px;
+      font-family: monospace;
+    }
+    pre {
+      background-color: #eee;
+      padding: 1em;
+      border-radius: 6px;
+      overflow-x: auto;
+    }
+    .note {
+      background-color: #fff8dc;
+      border-left: 4px solid #f0ad4e;
+      padding: 1em;
+      margin: 1em 0;
+    }
+    footer {
+      margin-top: 3em;
+      font-size: 0.9em;
+      color: #666;
+    }
+  </style>
+</head>
+<body>
+
+<h1>🔐 Threefish CLI</h1>
+<p>A lightweight, secure command-line tool for encrypting and decrypting files using the <strong>Threefish1024</strong> cipher with <strong>HMAC-SHA256</strong> authentication.</p>
+
+<hr>
+
+<h2>🚀 Features</h2>
+<ul>
+  <li>Uses <code>Threefish-1024</code> block cipher as a stream cipher</li>
+  <li>Encrypts and decrypts files in-place</li>
+  <li>Verifies file integrity and authenticity with <code>HMAC-SHA256</code></li>
+  <li>Secure key handling using <code>zeroize</code></li>
+  <li>Cross-platform, no unsafe code</li>
+</ul>
+
+<h2>🧪 Requirements</h2>
+<ul>
+  <li>A key file named <code>key.key</code> in the same directory as the binary</li>
+  <li>Key must be exactly <strong>160 bytes</strong></li>
+</ul>
+
+<pre><code>160 bytes total:
+- First 128 bytes: Encryption key (Threefish)
+- Last 32 bytes:   HMAC key (SHA256)</code></pre>
+
+<div class="note">
+  <strong>Note:</strong> You can generate a secure 160-byte key using a separate keygen tool or <code>/dev/urandom</code>.
+</div>
+
+<h2>🔧 Usage</h2>
+
+<h3>Encrypt a file</h3>
+<pre><code>threefish_cli encrypt myfile.txt</code></pre>
+
+<h3>Decrypt a file</h3>
+<pre><code>threefish_cli decrypt myfile.txt</code></pre>
+
+<p>The tool encrypts or decrypts the file <strong>in-place</strong>. A temporary file is created and then replaces the original after success.</p>
+
+<h2>🛡️ Security</h2>
+<ul>
+  <li>Each file is encrypted using a unique random nonce</li>
+  <li>HMAC-SHA256 ensures no tampering goes undetected</li>
+  <li>If authentication fails, the file will NOT be decrypted</li>
+</ul>
+
+<h2>❓ Troubleshooting</h2>
+<ul>
+  <li><strong>"Authentication failed"</strong>: File was modified or wrong key used</li>
+  <li><strong>"No key.key found"</strong>: Place a 160-byte key file in the same folder</li>
+</ul>
+
+<h2>📁 Project Structure</h2>
+<pre><code>threefish_cli.exe
+key.key
+README.html
+your_files.txt</code></pre>
+
+<footer>
+  <p>Made with ❤️ in Rust. Secure by design. Questions or improvements? Drop a message.</p>
+</footer>
+
+</body>
+</html>

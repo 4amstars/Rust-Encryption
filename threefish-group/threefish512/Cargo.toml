@@ -1,0 +1,15 @@
+[package]
+name = "threefish512"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+clap = { version = "4.5.37", features = ["derive"] }
+threefish = "0.5.2"
+rand = "0.9.1"
+zeroize = "1.8.1"
+anyhow   = "1.0.98"
+hmac = "0.12"
+sha2 = "0.10"
+
+
