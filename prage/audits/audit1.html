@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Prage Audit Report</title>
+  <style>
+    body { font-family: Arial, sans-serif; line-height: 1.6; margin: 20px; }
+    h1 { color: #333; }
+    h2 { color: #555; margin-top: 1em; }
+    ul { margin-left: 20px; }
+    code { background: #f4f4f4; padding: 2px 4px; border-radius: 4px; }
+  </style>
+</head>
+<body>
+  <h1>Production-Grade Audit for Prage</h1>
+  <h2>1. CLI &amp; UX</h2>
+  <ul>
+    <li><strong>✅ clap</strong> provides auto-generated help/version and strict validation.</li>
+    <li><strong>🔧 Improvement:</strong> Add global <code>--verbose</code>/<code>--quiet</code> toggle and semantic version output.</li>
+  </ul>
+  <h2>2. I/O Safety &amp; Performance</h2>
+  <ul>
+    <li><strong>✅ Buffered I/O:</strong> Uses <code>BufReader</code>/<code>BufWriter</code> for efficient streaming.</li>
+    <li><strong>✅ Atomic Writes:</strong> Writes to a temporary file and then renames to avoid corruption.</li>
+    <li><strong>🔧 Improvement:</strong> Consider larger buffer sizes for multi-gigabyte files, e.g., <code>with_capacity(64 * 1024)</code>.</li>
+  </ul>
+  <h2>3. Key Derivation (scrypt)</h2>
+  <ul>
+    <li><strong>✅ Defaults:</strong> <code>Identity::new(pass)</code> uses age’s “interactive” parameters.</li>
+    <li><strong>🔧 Improvement:</strong> Expose a <code>--sensitive</code> flag or allow custom <code>N</code>, <code>r</code>, <code>p</code> via CLI.</li>
+  </ul>
+  <h2>4. Secret Handling</h2>
+  <ul>
+    <li><strong>✅ Zeroization:</strong> <code>SecretString</code> auto-zeroizes on drop.</li>
+    <li><strong>🔧 Improvement:</strong> Explicitly <code>drop(pass)</code> immediately after use to minimize secret lifetime.</li>
+  </ul>
+  <h2>5. Error Context &amp; Logging</h2>
+  <ul>
+    <li><strong>✅ Contextual Errors:</strong> Clear error messages on all I/O and encryption steps.</li>
+    <li><strong>🔧 Improvement:</strong> Use a logging facade like <code>tracing</code> or <code>log</code> for toggled verbosity, timestamps, and backtraces.</li>
+  </ul>
+  <h2>6. Testing &amp; CI</h2>
+  <ul>
+    <li><strong>🔧 Tests:</strong>
+      <ul>
+        <li>Round-trip encrypt→decrypt with correct passphrase.</li>
+        <li>Decrypt failure on wrong passphrase.</li>
+        <li>Handling file-not-found and permission errors.</li>
+      </ul>
+    </li>
+    <li><strong>🔧 CI:</strong> Integrate <code>cargo test</code> and <code>cargo fmt -- --check</code> in GitHub Actions (or similar).</li>
+  </ul>
+  <h2>7. Documentation &amp; Packaging</h2>
+  <ul>
+    <li><strong>🔧 README:</strong> Add usage examples, security considerations, and recommended scrypt settings.</li>
+    <li><strong>🔧 Badges:</strong> Include CI, crates.io, and license badges.</li>
+  </ul>
+  <h2>8. Extras to Consider</h2>
+  <ul>
+    <li><strong>Progress Reporting:</strong> Use <code>indicatif</code> for a progress bar on large files.</li>
+    <li><strong>Public-Key Mode:</strong> Expose <code>Encryptor::with_recipients(...)</code> for non-password encryption.</li>
+    <li><strong>Cargo Features:</strong> Gate optional dependencies behind features to keep the core lean.</li>
+  </ul>
+  <h2>Bottom Line</h2>
+  <p>All previous streaming, buffering, and atomic-write concerns are fully addressed. The suggestions above will further harden, document, and polish the tool for production use.</p>
+</body>
+</html>

@@ -1,0 +1,13 @@
+[package]
+name = "serpent1"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+serpent = "0.5.1"
+rand = "0.8"
+hmac = "0.12"
+sha2 = "0.10"
+anyhow = "1.0"
+rpassword = "7.2"
+argon2 = "0.5"

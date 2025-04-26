@@ -1,0 +1,13 @@
+[package]
+name = "pkuz"
+version = "0.1.0"
+edition = "2024"
+
+
+[dependencies]
+kuznyechik = "0.8"
+eax = "0.5"
+aead = "0.5"
+argon2 = "0.5"
+rand = "0.8"
+rand_core = "0.6"

@@ -1,0 +1,12 @@
+[package]
+name = "paes"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+aes-gcm-siv = "0.11"
+aes = "0.8"
+argon2 = "0.5"
+rand = "0.8"
+rand_core = "0.6"
+base64 = "0.22"

@@ -1,0 +1,14 @@
+[package]
+name = "pthr"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+threefish = "0.5"
+block-buffer = "0.10"
+byteorder = "1.5"
+argon2 = "0.5"
+hmac = "0.12"
+sha2 = "0.10"
+rand = "0.8"
+rand_core = "0.6"

@@ -1,0 +1,13 @@
+[package]
+name = "pser"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+eax = "0.5"
+serpent = "0.5"
+block-cipher = "0.8"
+aead = "0.5"
+argon2 = "0.5"
+rand = "0.8"
+rand_core = "0.6"

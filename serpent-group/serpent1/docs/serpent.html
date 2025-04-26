@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Serpent File Encryptor - Documentation</title>
+  <style>
+    body {
+      font-family: system-ui, sans-serif;
+      max-width: 800px;
+      margin: 2em auto;
+      line-height: 1.6;
+      padding: 0 1em;
+      color: #333;
+    }
+    code {
+      background-color: #f3f3f3;
+      padding: 0.2em 0.4em;
+      border-radius: 4px;
+    }
+    pre {
+      background-color: #f3f3f3;
+      padding: 1em;
+      border-radius: 6px;
+      overflow-x: auto;
+    }
+    h1, h2, h3 {
+      color: #004488;
+    }
+  </style>
+</head>
+<body>
+
+<h1>🔐 Serpent File Encryptor</h1>
+<p><strong>A secure, CLI-based file encryption tool written in Rust using the Serpent block cipher.</strong></p>
+
+<hr>
+
+<h2>🔎 Overview</h2>
+<p>This application allows you to <strong>encrypt and decrypt files</strong> securely using a password. It uses:</p>
+
+<ul>
+  <li><strong>Serpent cipher</strong> (AES finalist, 256-bit block cipher)</li>
+  <li><strong>CBC mode</strong> with random IVs</li>
+  <li><strong>PKCS#7 padding</strong> for block alignment</li>
+  <li><strong>Argon2</strong> for password-based key derivation</li>
+  <li><strong>HMAC-SHA256</strong> for message authentication</li>
+</ul>
+
+<p>It works entirely from the command line, with no external configuration files needed.</p>
+
+<hr>
+
+<h2>⚙️ Usage</h2>
+
+<h3>🔐 Encrypt a file</h3>
+<pre><code>cargo run -- E secret.txt</code></pre>
+<p>You'll be prompted to enter your password twice for confirmation.</p>
+
+<h3>🔓 Decrypt a file</h3>
+<pre><code>cargo run -- D secret.txt</code></pre>
+<p>You'll be prompted to enter your password once to decrypt.</p>
+
+<hr>
+
+<h2>🔧 Installation</h2>
+<ol>
+  <li>Install <code>Rust</code> via <a href="https://rustup.rs" target="_blank">rustup</a></li>
+  <li>Clone the repo or download the source code</li>
+  <li>Run: <code>cargo build --release</code></li>
+  <li>Use the generated binary from <code>target/release/serpent1</code></li>
+</ol>
+
+<hr>
+
+<h2>🛠 Features</h2>
+
+<ul>
+  <li><strong>Encrypts or decrypts individual files</strong></li>
+  <li><strong>Safe overwrite</strong> with atomic temporary writes</li>
+  <li><strong>Verifies passwords during encryption</strong></li>
+  <li><strong>No external dependencies</strong> outside of Rust crates</li>
+</ul>
+
+<hr>
+
+<h2>🔐 Security Details</h2>
+<ul>
+  <li><strong>Encryption:</strong> Serpent-256 in CBC mode</li>
+  <li><strong>Padding:</strong> PKCS#7 to handle partial blocks</li>
+  <li><strong>Integrity:</strong> HMAC-SHA256 over salt, IV, and ciphertext</li>
+  <li><strong>Key Derivation:</strong> Argon2 with random salt per file</li>
+  <li><strong>Password Input:</strong> Hidden entry using <code>rpassword</code></li>
+</ul>
+
+<p>Each encrypted file contains:</p>
+<ol>
+  <li><code>Salt (16 bytes)</code></li>
+  <li><code>IV (16 bytes)</code></li>
+  <li><code>Ciphertext</code></li>
+  <li><code>HMAC tag (32 bytes)</code></li>
+</ol>
+
+<hr>
+
+<h2>💡 Future Features (Ideas)</h2>
+<ul>
+  <li>Recursive folder encryption</li>
+  <li>Backup original file before overwrite</li>
+  <li>File extension handling (e.g., <code>.enc</code>)</li>
+  <li>Configurable Argon2 params (memory, iterations)</li>
+  <li>Optional GUI with <code>egui</code> or <code>Tauri</code></li>
+</ul>
+
+<hr>
+
+<h2>📜 License</h2>
+<p>This project is open-source and licensed under the MIT License.</p>
+
+</body>
+</html>
