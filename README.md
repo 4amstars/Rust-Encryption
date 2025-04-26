@@ -5,7 +5,6 @@
 
 
 
-![a1500x500](https://github.com/user-attachments/assets/0bd62453-af4a-46c4-8430-9ad3d433e48e)
 
 
 
