@@ -6,14 +6,14 @@
 
 ```bash
 # Encrypt a single file
-fs-encrypt encrypt <input_file> <output_file> -p "mySecretPassword"
+fs encrypt <input_file> <output_file> -p "mySecretPassword"
 
 # Decrypt it back
-fs-encrypt decrypt <output_file> <restored_file> -p "mySecretPassword"
+fs decrypt <output_file> <restored_file> -p "mySecretPassword"
 
 # Encrypt or decrypt entire directories
-fs-encrypt encrypt ./my_data ./my_data.enc -p "password"
-fs-encrypt decrypt ./my_data.enc ./my_data.dec -p "password"
+fs encrypt ./my_data ./my_data.enc -p "password"
+fs decrypt ./my_data.enc ./my_data.dec -p "password"
 ```
 
 - `encrypt` / `decrypt`: operation mode
