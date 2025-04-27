@@ -1,0 +1,20 @@
+[package]
+name = "aead_stream_app"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+# Core Tink functionality (with the `insecure` feature so you can serialize/parse cleartext keysets)
+tink-core = { version = "0.3.0", features = ["insecure"] }
+
+# Streaming AEAD primitive
+tink-streaming-aead = "0.3.0"
+
+# CLI argument parsing
+clap = { version = "4.5.37", features = ["derive"] }
+
+# Randomness for key/nonce generation
+rand = "0.9.1"
+
+# Error handling
+anyhow = "1.0.98"
