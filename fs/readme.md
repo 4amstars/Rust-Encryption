@@ -1,20 +1,5 @@
 # fs CLI
 
-This is a simple command‑line application for encrypting and decrypting files or entire directories. It is built as a thin wrapper around the [`fs-encrypt`](https://crates.io/crates/fs-encrypt) crate (v0.1.3) and exposes its functionality via a standalone binary.
-
----
-
-## 🚀 Installation
-
-### 1. From crates.io
-
-If you have Rust and Cargo installed, run:
-
-```bash\cargo install fs-encrypt@0.1.3
-```
-
-This will install the `fs-encrypt` binary into your Cargo bin directory (usually `~/.cargo/bin`).
-
 
 
 ## 💡 Usage
