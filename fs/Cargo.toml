@@ -1,0 +1,20 @@
+[package]
+name = "fs"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+ 
+clap      = { version = "4.5.37", features = ["derive"] }
+walkdir     = "2.5.0"        # to recurse directories in files::get_filepaths
+aes-gcm     = "0.10.3"     # or your preferred AEAD cipher for encrypt::Cipher
+pbkdf2      = "0.12.2"     # for turning a password into a key
+
+rand_core = { version = "0.9.3", features = ["os_rng"] }
+getrandom = "0.2"
+sha2        = "0.10.8"     # if you need HMAC or PBKDF2 support
+base64      = "0.22.1"     # if you want to encode ciphertext to text
+# Optional (not required to compile your snippet):
+# anyhow    = "1.0"       # for simpler error handling
+# thiserror = "1.0"       # for custom error types
+# hex       = "0.4"       # if you want hex-encoded ciphertext
