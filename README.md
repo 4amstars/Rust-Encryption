@@ -13,7 +13,7 @@
 
 
 
-V- 0003
+V- 0004
 
 # Razor‑simple Rust encryption apps designed for ease of AI‑driven auditing, updating, and customization.
 
