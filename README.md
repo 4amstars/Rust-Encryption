@@ -167,7 +167,6 @@ Zig gives you manual memory control and a simple build system, but it lacks a bo
 
 
 
-![b](https://github.com/user-attachments/assets/baf7ff2c-acc4-46d5-82a5-f54d307d6f52)
 
 
 
@@ -175,6 +174,8 @@ Zig gives you manual memory control and a simple build system, but it lacks a bo
 
 
 
+
+![3](https://github.com/user-attachments/assets/d0f4b138-1714-4c61-94dc-eb2ec17eebaa)
 
 
 
