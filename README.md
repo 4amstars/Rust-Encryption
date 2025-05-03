@@ -15,7 +15,7 @@
 
 V- 0005
 
-Just delete the bat files if you are in linux. Some apps need a slight mod to atomic overwrite to work best in linux. For every app just feed the code to ai- it will audit and tell you how the app works. 
+Just delete the bat files if you are in linux. Some apps need a slight mod to atomic overwrite to work best in linux. For every app just feed the code to ai- it will audit and tell you how the app works. If i put all the apps here in they own repos this profile would dominate the search results (lol). Latest ver of chatgpt made all the code, and for every app here i tested it quite well. Also of note, it is silly to expect security from home made crypto apps or a spyware os such as windows. Some of the apps here are really good, some are easily crackable. Lastly, feel free to use the code however you wish. If you want to make your own repo with all the code go for it- as it would help promote rust. Zero restrictions on the code. 
 
 # Razor‑simple Rust encryption apps designed for ease of AI‑driven auditing, updating, and customization.
 
