@@ -15,7 +15,7 @@
 
 V- 0005
 
-Just delete the bat files if you are in linux. Some apps need a slight mod to atomic overwrite to work best in linux. For every app just feed the code to ai it will audit and tell you how the app works. 
+Just delete the bat files if you are in linux. Some apps need a slight mod to atomic overwrite to work best in linux. For every app just feed the code to ai- it will audit and tell you how the app works. 
 
 # Razor‑simple Rust encryption apps designed for ease of AI‑driven auditing, updating, and customization.
 
